@@ -3,7 +3,7 @@
         <v-toolbar class="teal darken-4">
             <v-app-bar-nav-icon class="white--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title>
-                <span class="white--text display-1">Livraria Teste</span>
+                <span class="white--text display-1">Knowledge Hub Livraria</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-navigation-drawer app temporary v-model="drawer" class="cyan darken-2">
@@ -31,7 +31,7 @@ export default {
                 {icon: 'mdi-view-dashboard', text: 'Dashboard', route: '/'},
                 {icon: 'mdi-account-plus', text: 'Usuários', route: '/client'},
                 {icon: 'mdi-card-plus-outline', text: 'Editoras', route: '/publisher'},
-                {icon: 'mdi-book-open-blank-variant', text: 'Livros', route: '/books'}
+                {icon: 'mdi-book-open-blank-variant', text: 'Livros', route: '/book'}
             ]
         }
     }

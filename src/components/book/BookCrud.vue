@@ -7,18 +7,18 @@
                         <v-card-title>{{ formTitle }}</v-card-title>
                         <v-card-text>
                             <v-form class="px-3" ref="form">
-                                <v-text-field label="Nome" v-model="client.name"
+                                <v-text-field label="Nome" v-model="book.name"
                                     :rules="[rules.required, rules.minLength, rules.maxLength]"></v-text-field>
-                                <v-text-field label="Idade" v-model="client.age"
-                                    :rules="[rules.required, rules.maxAgelength]"></v-text-field>
-                                <v-text-field label="E-mail" v-model="client.email"
+                                <v-text-field label="Autor" v-model="book.author"
+                                    :rules="[rules.required, rules.minLength]"></v-text-field>
+                                <v-text-field label="Data de lançamento" v-model="book.releaseDate"
                                     :rules="[rules.required, rules.minLength, rules.maxLength]"></v-text-field>
-                                <v-text-field label="Data de nascimento " v-model="client.birthDate"
+                                <v-text-field label="ISBN" v-model="book.isbn"
                                     :rules="[rules.required, rules.minLength, rules.maxLength]"></v-text-field>
-                                <v-text-field label="Cidade" v-model="client.city"
-                                    :rules="[rules.required, rules.minLength, rules.maxLength]"></v-text-field>
-                                <v-text-field label="Endereço" v-model="client.address"
-                                    :rules="[rules.required, rules.minLength, rules.maxCityLength]">
+                                <v-text-field label="Unidades disponíveis" v-model="book.amount"
+                                    :rules="[rules.required]"></v-text-field>
+                                    
+                                <v-text-field label="Editora" v-model="book.publisherModelId" :rules="[rules.required]">
                                 </v-text-field>
                             </v-form>
                         </v-card-text>
@@ -31,14 +31,14 @@
             </template>
             <v-card>
                 <v-card-title>
-                    Usuários
+                    Livros
                     <v-divider></v-divider>
                     <v-btn class="ma-2 teal darken-4 white--text" rounded @click="dialog = true">Cadastrar</v-btn>
                     <v-spacer></v-spacer>
                     <v-text-field v-model="search" append-icon="mdi-magnify" label="Pesquisar" single-line hide-details>
                     </v-text-field>
                 </v-card-title>
-                <v-data-table :headers="headers" :items="clientsArray" :search="search" class="elevation-1"
+                <v-data-table :headers="headers" :items="booksArray" :search="search" class="elevation-1"
                     items-per-page="5">
                     <template v-slot:[`item.actions`]="{ item }">
                         <v-tooltip top color="#0061A3">
@@ -68,31 +68,33 @@
 </template>
 
 <script>
-import clients from '@/services/clients'
+import books from '@/services/books'
+// import publishers from '@/services/publishers';
 
 export default {
     name: 'ClientCrud',
     data() {
         return {
-            client: {
+            book: {
                 id: 0,
                 name: '',
-                age: '',
-                email: '',
-                birthDate: '',
-                city: '',
-                address: ''
+                author: '',
+                releaseDate: '',
+                isbn: '',
+                amount: '',
+                // publisherModel: null,
+                publisherModelId: 0
             },
-            objectClient: {
+            objectBook: {
                 id: 0,
                 name: '',
-                age: '',
-                email: '',
-                birthDate: '',
-                city: '',
-                address: ''
+                author: '',
+                releaseDate: '',
+                isbn: '',
+                amount: '',
+                publisherModelId: 0
             },
-            clientsArray: [],
+            booksArray: [],
             errors: [],
             search: '',
             index: -1,
@@ -110,29 +112,35 @@ export default {
 
                 },
                 {
-                    text: 'IDADE',
-                    value: 'age',
+                    text: 'AUTOR',
+                    value: 'author',
                     class: 'teal darken-4, white--text'
 
                 },
                 {
-                    text: 'EMAIL',
-                    value: 'email',
+                    text: 'DATA DE LANÇAMENTO',
+                    value: 'releaseDate',
+                    class: 'teal darken-4, white--text'
+
+                },
+                {
+                    text: 'ISBN',
+                    value: 'isbn',
                     class: 'teal darken-4, white--text'
                 },
                 {
-                    text: 'DATA DE NASCIMENTO',
-                    value: 'birthDate',
+                    text: 'UNIDADES DISPONÍVEIS',
+                    value: 'amount',
                     class: 'teal darken-4, white--text'
                 },
                 {
-                    text: 'CIDADE',
-                    value: 'city',
+                    text: 'UNIDADES ALUGADAS',
+                    value: 'rentedAmount',
                     class: 'teal darken-4, white--text'
                 },
                 {
-                    text: 'ENDEREÇO',
-                    value: 'address',
+                    text: 'EDITORA',
+                    value: 'publisherModel.name',
                     class: 'teal darken-4, white--text'
                 },
                 {
@@ -146,7 +154,7 @@ export default {
             dialog: false,
             rules: {
                 required: (value) => !!value || 'Este campo é obrigatório',
-                minLength: (value) => value.length >=3 || 'Mínimo de 3 caracteres',
+                minLength: (value) => value.length >= 3 || 'Mínimo de 3 caracteres',
                 maxLength: (value) => value.length <= 45 || 'Máximo de 45 caracteres',
                 maxCityLength: (value) => value.length <= 30 || 'Máximo de 30 caracteres',
                 maxAgelength: (value) => value.length >= 1 && value.length <= 3 || 'Máximo de 3 caracteres'
@@ -163,15 +171,15 @@ export default {
     },
     computed: {
         formTitle() {
-            return this.index === -1 ? 'Novo usuário' : 'Editar usuário'
+            return this.index === -1 ? 'Novo livro' : 'Editar livro'
         }
 
     },
     methods: {
         list() {
-            clients.list().then((resposta) => {
-                console.log('clientsArray', resposta.data)
-                this.clientsArray = resposta.data
+            books.list().then((resposta) => {
+                console.log('books', resposta.data)
+                this.booksArray = resposta.data
             })
         },
 
@@ -185,118 +193,119 @@ export default {
             this.close()
         },
         insert() {
-            clients.save(this.client).then((resposta) => {
+            books.save(this.book).then((resposta) => {
                 console.log(resposta.data)
                 this.list()
                 this.$swal({
                     title: 'Sucesso',
-                    text: 'Usuário cadastrado!',
+                    text: 'livro cadastrado!',
                     icon: "success",
                     allowOutsideClick: false
                 }).then(() => {
-                    window.Toast.fire('Usuário cadastrado', '', 'success')
+                    window.Toast.fire('livro cadastrado', '', 'success')
                 })
             }).catch(() => {
                 this.$swal({
                     title: 'Opss...',
-                    text: 'Usuário já cadastrado',
+                    text: 'livro já cadastrado',
                     icon: 'info',
                     allowOutsideClick: false
                 }).then(() => {
-                    window.Toast.fire('Erro ao cadastrar usuário', '', 'error')
+                    window.Toast.fire('Erro ao cadastrar livro', '', 'error')
                 })
             })
         },
         update() {
-            clients.update(this.client.id, this.client).then((resposta) => {
+            books.update(this.book.id, this.book).then((resposta) => {
                 console.log(resposta.data)
                 this.list()
                 this.$swal({
                     title: 'Sucesso',
-                    text: 'Usuário atualizado!',
+                    text: 'Livro atualizado!',
                     icon: "success",
                     allowOutsideClick: false
                 }).then(() => {
-                    window.Toast.fire('Usuário atualizado', '', 'success')
+                    window.Toast.fire('livro atualizado', '', 'success')
                 })
             }).catch(() => {
+                console.log()
                 this.$swal({
                     title: 'Opss...',
-                    text: 'Usuário já cadastrado',
+                    text: 'Livro já cadastrado',
                     icon: 'info',
                     allowOutsideClick: false
                 }).then(() => {
-                    window.Toast.fire('Erro ao atualizar usuário', '', 'error')
+                    window.Toast.fire('Erro ao atualizar livro', '', 'error')
                 })
 
 
             })
 
         },
-            remove(item) {
-                this.index = item.id
-                this.client = Object.assign({}, item)
-                this.removeConfirm()
+        remove(item) {
+            this.index = item.id
+            this.book = Object.assign({}, item)
+            this.removeConfirm()
 
-            },
-            removeFinal() {
-                clients.delete(this.client.id).then(resposta => {
-                    console.log(resposta.data)
-                    this.removeConfirm()
+        },
+        removeFinal() {
+            books.delete(this.book.id).then(resposta => {
+                console.log(resposta.data)
+                this.removeConfirm()
+                this.$swal({
+                    title: 'Sucesso',
+                    text: 'Livro excluído',
+                    icon: 'success',
+                    allowOutsideClick: false
+                }).then(() => {
+                    window.Toast.fire('Livro excluído', '', 'info')
+                })
+                this.list()
+            }).catch((e) => {
+                this.$swal({
+                    title: 'Opss...',
+                    text: e.response.data.message,
+                    icon: 'info',
+                    allowOutsideClick: false
+                }).then(() => {
+                    window.Toast.fire('Erro ao excluir editora', '', 'error')
+                })
+            })
+        },
+        removeConfirm() {
+            this.$swal({
+                title: 'Deseja excluir esse livro?',
+                icon: 'warning',
+                showDenyButton: true,
+                confirmButtonText: 'Excluir',
+                denyButtonText: 'Cancelar',
+                allowOutsideClick: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.removeFinal()
+                } else if (result.isDenied) {
                     this.$swal({
-                        title: 'Sucesso',
-                        text: 'Usuário excluído',
-                        icon: 'success',
-                        allowOutsideClick: false
-                    }).then(() => {
-                        window.Toast.fire('Usuário excluído', '', 'info')
-                    })
-                    this.list()
-                }).catch((e) => {
-                    this.$swal({
-                        title: 'Opss...',
-                        text: e.response.data.message,
+                        title: 'Exclusão interrompida',
                         icon: 'info',
                         allowOutsideClick: false
-                    }).then(() => {
-                        window.Toast.fire('Erro ao excluir editora', '', 'error')
                     })
+                }
+                this.$nextTick(() => {
+                    this.book = Object.assign({}, this.objectBook)
+                    this.index = -1
+                    this.$refs.form.resetValidation()
                 })
-            },
-            removeConfirm() {
-                this.$swal({
-                    title: 'Deseja excluir esse usuário?',
-                    icon: 'warning',
-                    showDenyButton: true,
-                    confirmButtonText: 'Excluir',
-                    denyButtonText: 'Cancelar',
-                    allowOutsideClick: false,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.removeFinal()
-                    } else if (result.isDenied) {
-                        this.$swal({
-                            title: 'Exclusão interrompida',
-                            icon: 'info',
-                            allowOutsideClick: false
-                        })
-                    }
-                    this.$nextTick(() => {
-                        this.client = Object.assign({}, this.objectClient)
-                        this.index = -1
-                        this.$refs.form.resetValidation()
-                    })
-                })
-            },
-            editFirst(item) {
-                this.dialog = true
-                this.index = item.id
-                this.client = Object.assign({}, item)
-            },
+            })
+        },
+        editFirst(item) {
+            this.dialog = true
+            this.index = item.id
+            this.book = Object.assign({}, item)
+        },
         close() {
             this.dialog = false
             this.$nextTick(() => {
-                this.client = Object.assign({}, this.objectClient)
+                // this.book = Object.assign({}, this.objectBook)
                 this.index = -1
                 this.$refs.form.reset()
             })
