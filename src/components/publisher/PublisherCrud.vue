@@ -7,9 +7,16 @@
                         <v-card-title>{{ formTitle }}</v-card-title>
                         <v-card-text>
                             <v-form class="px-3" ref="form">
-                                <v-text-field label="Nome da editora" v-model="publisher.name"
-                                    :rules="[rules.required, rules.minLength, rules.maxLength]"></v-text-field>
-                                <v-text-field label="Cidade da editora" v-model="publisher.city" :rules="[rules.required, rules.minLength, rules.maxCityLength]">
+                                <v-text-field
+                                    label="Nome da editora"
+                                    v-model="publisher.name"
+                                    :rules="[rules.required, rules.minLength, rules.maxLength]"
+                                ></v-text-field>
+                                <v-text-field
+                                    label="Cidade da editora"
+                                    v-model="publisher.city"
+                                    :rules="[rules.required, rules.minLength, rules.maxCityLength]"
+                                >
                                 </v-text-field>
                             </v-form>
                         </v-card-text>
@@ -29,13 +36,25 @@
                     <v-text-field v-model="search" append-icon="mdi-magnify" label="Pesquisar" single-line hide-details>
                     </v-text-field>
                 </v-card-title>
-                <v-data-table :headers="headers" :items="publishersArray" :search="search" class="elevation-1"
-                    items-per-page="5">
+                <v-data-table
+                    :headers="headers"
+                    :items="publishersArray"
+                    :search="search"
+                    class="elevation-1"
+                    items-per-page="5"
+                >
                     <template v-slot:[`item.actions`]="{ item }">
                         <v-tooltip top color="#0061A3">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn color="primary" v-bind="attrs" v-on="on" text small rounded
-                                    @click="editFirst(item)">
+                                <v-btn
+                                    color="primary"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    text
+                                    small
+                                    rounded
+                                    @click="editFirst(item)"
+                                >
                                     <v-icon dark>mdi-pencil</v-icon>
                                 </v-btn>
                             </template>
@@ -52,10 +71,8 @@
                     </template>
                 </v-data-table>
             </v-card>
-
         </template>
     </div>
-
 </template>
 
 <script>
@@ -84,144 +101,146 @@ export default {
                     text: 'ID',
                     align: 'start',
                     value: 'id',
-                    class: 'teal darken-4, white--text'
+                    class: 'teal darken-4, white--text',
                 },
                 {
                     text: 'NOME',
                     value: 'name',
-                    class: 'teal darken-4, white--text'
-
+                    class: 'teal darken-4, white--text',
                 },
                 {
                     text: 'CIDADE',
                     value: 'city',
-                    class: 'teal darken-4, white--text'
+                    class: 'teal darken-4, white--text',
                 },
                 {
                     text: 'AÇÕES',
                     value: 'actions',
+                    align: 'center',
                     class: 'teal darken-4, white--text',
-                    sortable: 'false'
+                    sortable: 'false',
                 },
             ],
             nomeCerto: '',
             dialog: false,
             rules: {
-            required: (value) => !!value || 'Este campo é obrigatório',
+                required: (value) => !!value || 'Este campo é obrigatório',
                 maxLength: (value) => value.length <= 45 || 'Máximo de 45 caracteres',
-                    maxCityLength: (value) => value.length <= 30 || 'Máximo de 30 caracteres',
-                        minLength: (value) => value.length >= 3 || 'Mínimo de 3 caracteres'
-    }
-        }
-            
+                maxCityLength: (value) => value.length <= 30 || 'Máximo de 30 caracteres',
+                minLength: (value) => value.length >= 3 || 'Mínimo de 3 caracteres',
+            },
+        };
     },
     watch: {
         dialog(val) {
             val || this.close();
             val || this.$refs.form.resetValidation();
-        }
-
+        },
     },
     computed: {
         formTitle() {
-            return this.index === -1 ? 'Nova editora' : 'Editar editora'
-        }
-
+            return this.index === -1 ? 'Nova editora' : 'Editar editora';
+        },
     },
     methods: {
         list() {
             publishers.list().then((resposta) => {
-                console.log('publishersArray', resposta.data)
-                this.publishersArray = resposta.data
-            })
+                console.log('publishersArray', resposta.data);
+                this.publishersArray = resposta.data;
+            });
         },
         saveif() {
             if (!this.$refs.form.validate()) return;
             if (this.index > -1) {
-                this.update()
+                this.update();
             } else {
-                this.insert()
+                this.insert();
             }
-            this.close()
+            this.close();
         },
         insert() {
-            publishers.save(this.publisher).then((resposta) => {
-                console.log(resposta.data)
-                this.list()
+            publishers
+                .save(this.publisher)
+                .then((resposta) => {
+                    console.log(resposta.data);
+                    this.list();
                     this.$swal({
                         title: 'Sucesso',
                         text: 'Editora cadastrada!',
-                        icon: "success",
-                        allowOutsideClick: false
+                        icon: 'success',
+                        allowOutsideClick: false,
                     }).then(() => {
-                        window.Toast.fire('Editora cadastrada', '', 'success')
-                    })
-            }).catch(() => {
-                this.$swal({
-                    title: 'Opss...',
-                    text: 'Editora já cadastrada',
-                    icon: 'info',
-                    allowOutsideClick: false
-                }).then(() => {
-                    window.Toast.fire('Erro ao cadastrar editora', '', 'error')
+                        window.Toast.fire('Editora cadastrada', '', 'success');
+                    });
                 })
-            })
+                .catch(() => {
+                    this.$swal({
+                        title: 'Opss...',
+                        text: 'Editora já cadastrada',
+                        icon: 'info',
+                        allowOutsideClick: false,
+                    }).then(() => {
+                        window.Toast.fire('Erro ao cadastrar editora', '', 'error');
+                    });
+                });
         },
         update() {
-            publishers.edit(this.publisher.id, this.publisher).then((resposta) => {
-                console.log(resposta.data)
-                this.list()
-                this.$swal({
+            publishers
+                .edit(this.publisher.id, this.publisher)
+                .then((resposta) => {
+                    console.log(resposta.data);
+                    this.list();
+                    this.$swal({
                         title: 'Sucesso',
                         text: 'Editora atualizada!',
-                        icon: "success",
-                        allowOutsideClick: false
+                        icon: 'success',
+                        allowOutsideClick: false,
                     }).then(() => {
-                        window.Toast.fire('Editora cadastrada', '', 'success')
-                    })
-            }).catch(() => {
-                this.$swal({
-                    title: 'Opss...',
-                    text: 'Editora já cadastrada',
-                    icon: 'info',
-                    allowOutsideClick: false
-                }).then(() => {
-                    window.Toast.fire('Erro ao cadastrar editora', '', 'error')
+                        window.Toast.fire('Editora cadastrada', '', 'success');
+                    });
                 })
-
-
-            })
-
+                .catch(() => {
+                    this.$swal({
+                        title: 'Opss...',
+                        text: 'Editora já cadastrada',
+                        icon: 'info',
+                        allowOutsideClick: false,
+                    }).then(() => {
+                        window.Toast.fire('Erro ao cadastrar editora', '', 'error');
+                    });
+                });
         },
         remove(item) {
-            this.index = item.id
-            this.publisher = Object.assign({}, item)
-            this.removeConfirm()
-
+            this.index = item.id;
+            this.publisher = Object.assign({}, item);
+            this.removeConfirm();
         },
         removeFinal() {
-            publishers.delete(this.publisher.id).then(resposta => {
-                console.log(resposta.data)
-                this.removeConfirm()
-                this.$swal({
-                    title: 'Sucesso',
-                    text: 'Editora excluída',
-                    icon: 'success',
-                    allowOutsideClick: false
-                }).then(() => {
-                    window.Toast.fire('Editora excluída', '', 'info')
+            publishers
+                .delete(this.publisher.id)
+                .then((resposta) => {
+                    console.log(resposta.data);
+                    this.removeConfirm();
+                    this.$swal({
+                        title: 'Sucesso',
+                        text: 'Editora excluída',
+                        icon: 'success',
+                        allowOutsideClick: false,
+                    }).then(() => {
+                        window.Toast.fire('Editora excluída', '', 'info');
+                    });
+                    this.list();
                 })
-                this.list()
-            }).catch((e) => {
-                this.$swal({
-                    title: 'Opss...',
-                    text: e.response.data.message,
-                    icon: 'info',
-                    allowOutsideClick: false
-                }).then(() => {
-                    window.Toast.fire('Erro ao excluir editora', '', 'error')
-                })
-            })
+                .catch((e) => {
+                    this.$swal({
+                        title: 'Opss...',
+                        text: e.response.data.message,
+                        icon: 'info',
+                        allowOutsideClick: false,
+                    }).then(() => {
+                        window.Toast.fire('Erro ao excluir editora', '', 'error');
+                    });
+                });
         },
         removeConfirm() {
             this.$swal({
@@ -233,40 +252,38 @@ export default {
                 allowOutsideClick: false,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.removeFinal()
+                    this.removeFinal();
                 } else if (result.isDenied) {
                     this.$swal({
                         title: 'Exclusão interrompida',
                         icon: 'info',
-                        allowOutsideClick: false
-                    })
+                        allowOutsideClick: false,
+                    });
                 }
                 this.$nextTick(() => {
-                    this.publisher = Object.assign({}, this.objectPublisher)
-                    this.index = -1
-                    this.$refs.form.resetValidation()
-                })
-            })
+                    this.publisher = Object.assign({}, this.objectPublisher);
+                    this.index = -1;
+                    this.$refs.form.resetValidation();
+                });
+            });
         },
-        
+
         editFirst(item) {
-            this.dialog = true
-            this.index = item.id
-            this.publisher = Object.assign({}, item)
+            this.dialog = true;
+            this.index = item.id;
+            this.publisher = Object.assign({}, item);
         },
         close() {
-            this.dialog = false
+            this.dialog = false;
             this.$nextTick(() => {
-                this.publisher = Object.assign({}, this.objectPublisher)
-                this.index = -1
-                this.$refs.form.reset()
-            })
-        }
-
+                this.publisher = Object.assign({}, this.objectPublisher);
+                this.index = -1;
+                this.$refs.form.reset();
+            });
+        },
     },
     mounted() {
         this.list();
-
-    }
-}
+    },
+};
 </script>

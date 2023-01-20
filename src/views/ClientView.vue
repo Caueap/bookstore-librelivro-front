@@ -10,8 +10,7 @@ import ClientCrud from '@/components/client/ClientCrud.vue';
 export default {
     name: 'ClientView',
     components: {
-        ClientCrud
-    }
-}
-
+        ClientCrud,
+    },
+};
 </script>

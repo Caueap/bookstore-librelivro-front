@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import PublisherView from '@/views/PublisherView'
 import ClientView from '@/views/ClientView'
 import BookView from '@/views/BookView'
+import RentalView from '@/views/RentalView'
 
 
 Vue.use(VueRouter)
@@ -28,6 +29,11 @@ const routes = [
     path: '/book',
     name: 'BookView',
     component: BookView
+  },
+  {
+    path: '/rental',
+    name: 'RentalView',
+    component: RentalView
   }
 ]
 

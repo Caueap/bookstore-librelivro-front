@@ -10,8 +10,7 @@ import BookCrud from '@/components/book/BookCrud.vue';
 export default {
     name: 'BookView',
     components: {
-        BookCrud
-    }
-}
-
+        BookCrud,
+    },
+};
 </script>
