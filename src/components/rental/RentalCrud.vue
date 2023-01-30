@@ -4,7 +4,7 @@
             <template>
                 <v-dialog v-model="dialog" max-width="500" persistent>
                     <v-card>
-                        <v-card-title>{{ formTitle }}</v-card-title>
+                        <v-card-title>Novo Aluguel</v-card-title>
                         <v-card-text>
                             <v-form class="px-3" ref="form">
                                 <v-select
@@ -208,11 +208,11 @@
                     class="elevation-1"
                     items-per-page="5"
                 >
-                    <template v-slot:[`item.rentalDate`]="{ item }"> {{ parseDate(item.rentalDate) }} </template>
+                    <!-- <template v-slot:[`item.rentalDate`]="{ item }"> {{ parseDate(item.rentalDate) }} </template>
                     <template v-slot:[`item.expectedDeliveryDate`]="{ item }">
                         {{ parseDate(item.expectedDeliveryDate) }}
                     </template>
-                    <template v-slot:[`item.deliveryDate`]="{ item }"> {{ parseDate(item.deliveryDate) }} </template>
+                    <template v-slot:[`item.deliveryDate`]="{ item }"> {{ parseDate(item.deliveryDate) }} </template> -->
                     <template v-slot:[`item.actions`]="{ item }">
                         <v-tooltip top color="#0061A3">
                             <template v-slot:activator="{ on, attrs }">
@@ -363,39 +363,26 @@ export default {
     //     },
     // },
     computed: {
-        formTitle() {
-            return this.index === -1 ? 'Novo aluguel' : 'Editar aluguel';
-        },
+        // formTitle() {
+        //     return this.index === -1 ? 'Novo aluguel' : 'Editar aluguel';
+        // },
         todayDate() {
             return moment(new Date()).format('yyyy-MM-DD');
         },
         formattedRentalDate() {
-            return this.parseDate(this.rental.rentalDate)
+            return this.parseDate(this.rental.rentalDate);
         },
         formattedExpectedDeliveryDate() {
-            return this.parseDate(this.rental.expectedDeliveryDate)
-        }
+            return this.parseDate(this.rental.expectedDeliveryDate);
+        },
     },
 
     methods: {
-        resetRental() {
-            this.rental = {
-                id: '',
-                rentalDate: '',
-                expectedDeliveryDate: '',
-                deliveryDate: '',
-                status: '',
-                bookModel: '',
-                bookModelId: '',
-                clientModel: '',
-                clientModelId: '',
-            };
-        },
-
         parseDate(date) {
             if (date) {
                 return moment(date).format('DD/MM/yyyy');
-            } return ''
+            }
+            return '';
         },
         parseDateISO(date) {
             const [dd, mm, yyyy] = date.split('/');
@@ -405,16 +392,16 @@ export default {
             rentals.list().then((resposta) => {
                 console.log('rentals', resposta.data);
                 this.rentalsArray = resposta.data;
-                // this.rentalsArray.forEach((item) => {
-                //     item.rentalDate = this.parseDate(item.rentalDate);
-                //     item.expectedDeliveryDate = this.parseDate(item.expectedDeliveryDate);
-                //     console.log(item.deliveryDate);
-                //     if (item.deliveryDate != null) {
-                //         item.deliveryDate = this.parseDate(item.deliveryDate);
-                //     } else {
-                //         item.deliveryDate;
-                //     }
-                // });
+                this.rentalsArray.forEach((item) => {
+                    item.rentalDate = this.parseDate(item.rentalDate);
+                    item.expectedDeliveryDate = this.parseDate(item.expectedDeliveryDate);
+                    console.log(item.deliveryDate);
+                    if (item.deliveryDate != null) {
+                        item.deliveryDate = this.parseDate(item.deliveryDate);
+                    } else {
+                        item.deliveryDate;
+                    }
+                });
             });
         },
         clientsList() {
@@ -507,11 +494,11 @@ export default {
             this.close();
         },
         remove(item) {
-            this.index = item.id;
+            // this.index = item.id;
             this.rental = Object.assign({}, item);
-            // this.rental.rentalDate = this.parseDateISO(item.rentalDate);
-            // this.rental.expectedDeliveryDate = this.parseDateISO(item.expectedDeliveryDate);
-            // this.rental.deliveryDate = this.parseDateISO(item.deliveryDate);
+            this.rental.rentalDate = this.parseDateISO(item.rentalDate);
+            this.rental.expectedDeliveryDate = this.parseDateISO(item.expectedDeliveryDate);
+            this.rental.deliveryDate = this.parseDateISO(item.deliveryDate);
             this.removeConfirm();
         },
         removeFinal() {
@@ -567,39 +554,7 @@ export default {
                 });
             });
         },
-        /*deliveryFirst(item) {
-            this.$swal({
-                title: 'Deseja devolver esse livro?',
-                icon: 'warning',
-                showDenyButton: true,
-                confirmButtonText: 'Devolver',
-                denyButtonText: 'Cancelar',
-                allowOutsideClick: false,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    item.rentalDate = this.parseDateISO(item.rentalDate);
-                    item.expectedDeliveryDate = this.parseDateISO(item.expectedDeliveryDate);
-                    item.deliveryDate = this.date;
-                    rentals.update(item).then(() => {
-                        this.$swal("Livro Devolvido com Sucesso!", "", "success");
-                        this.list()
-                    });
-                } else {
-                    // this.rental.rentalDate = this.parseDateISO(item.rentalDate);
-                    // this.rental.expectedDeliveryDate = this.parseDateISO(item.expectedDeliveryDate);
-                    // this.rental = Object.assign({}, this.objectRental);
-                    // this.$refs.form.resetValidation();
-                    this.$swal('Livro não Devolvido', '', 'info');
-                    // this.list();
-                }
-            });
-            // this.dialog = true;
-
-            // this.rental.rentalDate = this.parseDateISO(item.rentalDate);
-            // this.rental.expectedDeliveryDate = this.parseDateISO(item.expectedDeliveryDate);
-        },*/
         deliveryFirst(item) {
-            this.rental = Object.assign({}, item);
             this.$swal({
                 title: 'Deseja devolver esse livro?',
                 icon: 'warning',
@@ -609,19 +564,21 @@ export default {
                 allowOutsideClick: false,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // this.rental.rentalDate = this.parseDateISO(item.rentalDate);
-                    // this.rental.expectedDeliveryDate = this.parseDateISO(item.expectedDeliveryDate);
+                    this.rental = Object.assign({}, item);
+                    this.rental.rentalDate = this.parseDateISO(item.rentalDate);
+                    this.rental.expectedDeliveryDate = this.parseDateISO(item.expectedDeliveryDate);
                     this.rental.deliveryDate = this.date;
                     this.update();
                 } else if (result.isDenied) {
                     // this.rental.rentalDate = this.parseDateISO(item.rentalDate);
                     // this.rental.expectedDeliveryDate = this.parseDateISO(item.expectedDeliveryDate);
-                    this.rental = Object.assign({}, this.objectRental);
-                    this.$refs.form.resetValidation();
+                    // this.rental = Object.assign({}, this.objectRental);
+                    // this.$refs.form.resetValidation();
                     this.$swal('Livro não Devolvido', '', 'info');
                 }
             });
         },
+
         closeC() {
             // this.up = true;
             // this.up2 = false;
