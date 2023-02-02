@@ -3,7 +3,7 @@
         <v-app-bar class="teal darken-4">
             <v-app-bar-nav-icon class="white--text d-flex d-md-none" @click="drawer = true"></v-app-bar-nav-icon>
             <v-toolbar-title>
-                <h1 class="white--text">KnowledgeHub Livraria</h1>
+                <h1 class="white--text">LibreLivro</h1>
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
@@ -18,13 +18,13 @@
                     </div>
                     <div class="mt-3 mr-2">
                         <v-btn class="transparent" to="/client">
-                            <v-icon class="white--text el-margin">mdi-account-plus</v-icon>
+                            <v-icon class="white--text el-margin">mdi mdi-account</v-icon>
                             <span class="white--text">Usuários</span>
                         </v-btn>
                     </div>
                     <div class="mt-3 mr-2">
                         <v-btn class="transparent" to="/publisher">
-                            <v-icon class="white--text el-margin">mdi-card-plus-outline</v-icon>
+                            <v-icon class="white--text el-margin">mdi mdi-domain</v-icon>
                             <span class="white--text">Editoras</span>
                         </v-btn>
                     </div>
@@ -83,11 +83,11 @@ h1{
     font-family: ""
 }
 
-@media (max-width: 500px) {
+/* @media (max-width: 500px) {
   h1 {
     font-size: 24px;
   }
-}
+} */
 
 
 

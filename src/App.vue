@@ -1,22 +1,20 @@
 <template>
   <v-app>
     <Toolbar/>
-    <HomeView/>
-    <v-main>
-      <router-view/>
-    </v-main>
+    <!-- <HomeView/> -->
+    <router-view/>
   </v-app>
 </template>
 
 <script>
 import Toolbar from '@/components/ToolbarComp.vue'
-import HomeView from './views/HomeView.vue'
+// import HomeView from './views/HomeView.vue'
 
 export default {
   name: 'App',
   components: {
     Toolbar, 
-    HomeView
+    // HomeView
   },
   data: () => ({
     //
