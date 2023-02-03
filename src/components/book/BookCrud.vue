@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <template>
+    
+        <div>
             <template>
                 <v-dialog v-model="dialog" max-width="500" persistent>
                     <v-card>
@@ -91,7 +91,9 @@
                     </v-card>
                 </v-dialog>
             </template>
-            <v-card>
+
+            
+            <v-card class="card">
                 <v-card-title>
                     Livros
                     <v-divider></v-divider>
@@ -135,8 +137,10 @@
                     </template>
                 </v-data-table>
             </v-card>
-        </template>
-    </div>
+        
+
+        </div>
+    
 </template>
 
 <script>
@@ -415,3 +419,13 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+
+.card {
+    margin-top: 20px;
+}
+
+
+
+</style>

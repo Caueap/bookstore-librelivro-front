@@ -1,7 +1,9 @@
 <template>
-    <v-container>
-        <BookCrud />
-    </v-container>
+    <div class="maindiv">
+        <v-container>
+            <BookCrud />
+        </v-container>
+    </div>
 </template>
 
 <script>
@@ -14,3 +16,12 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+
+.maindiv {
+    background-color: #00695C;
+    padding-bottom: 100%;
+}
+
+</style>
