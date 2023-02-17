@@ -13,6 +13,8 @@ Vue.use(VueSweetalert2);
 Vue.use(VueApexCharts)
 
 
+
+
 new Vue({
   router,
   store,

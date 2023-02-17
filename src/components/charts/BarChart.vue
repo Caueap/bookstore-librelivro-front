@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <barchart type="bar" width="500" :options="options" :series="series" class="chart"></barchart>
+    <div class="main">
+        <barchart type="bar" :options="options" :series="series" class="chart"></barchart>
     </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
                 chart: {
                     id: 'barchart',
                 },
-                xaxis: { 
+                xaxis: {
                     categories: [
                         'O Velho e o Mar',
                         'A Metamorfose',
@@ -30,30 +30,28 @@ export default {
                     },
                 },
 
-                // responsive: [
-                //     {
-                //         breakpoint: 700,
-                //         options: {
-                //             series: [30, 40, 45, 50, 60],
-                //             chart: {
-                //                 type: 'pie',
-                //                 width: 200,
+                //     responsive: [
+                //         {
+                //             breakpoint: 700,
+                //             options: {
+                //                 series: [30, 40, 45, 50, 60],
+                //                 chart: {
+                //                     type: 'pie',
+                //                     width: 200,
+                //                 },
                 //             },
-                //         },
-                        // labels: ['']
-                        // options: {
-                        //     chart: {
-                        //         width: 250,
-                        //         // height: '80%'
-                        //     },
-                        //     plotOptions: {
-                        //         bar: {
-                        //             horizontal: true
-                        //         }
-                        //     }
-                        // },
-                    
-                
+                //             labels: ['']
+                //             options: {
+                //                 chart: {
+                //                     width: 250,
+                //                     // height: '80%'
+                //                 },
+                //                 plotOptions: {
+                //                     bar: {
+                //                         horizontal: true
+                //                     }
+                //                 }
+                //             },
 
                 colors: ['#00695c'],
             },
@@ -68,18 +66,23 @@ export default {
     components: {
         barchart,
     },
-}
-
+};
 </script>
-    
+
 <style scoped>
 
-/* @media (max-width: 400px) {
-    .chart {
-        width: 50%;
+
+
+
+    /* @media screen and (min-width: 600px) and (max-width: 960px) {
+        .main {
+            width: 80%;
+        }
+    } */
+
+@media screen and (min-width: 300px) and (max-width: 600px) {
+    .main {
+        max-width: 525px;
     }
-} */
-
-
-
+}
 </style>
