@@ -4,16 +4,17 @@
             <v-container fluid>
                 <v-item-group class="itemgroup">
                     <v-row justify="space-around" class="space mainrow">
-                        <v-col cols="12" md="2" xl="2" sm="6" class="col">
+
+                        <v-col v-for="(info, index) in infos" :key="index" cols="12" md="2" xl="2" sm="6" class="col">
                             <v-item>
                                 <v-card class="d-flex align-center rounded-xl card" color="#004D40" height="200">
                                     <v-list-item three-line class="mt-10">
                                         <v-list-item-content>
                                             <div class="mb-4">
-                                                <v-icon x-large color="white">mdi mdi-account</v-icon>
+                                                <v-icon x-large color="white">{{ info.icon }}</v-icon>
                                             </div>
-                                            <v-list-item-subtitle> Usuários </v-list-item-subtitle>
-                                            <v-list-item-title class="mb-1">52 </v-list-item-title>
+                                            <v-list-item-subtitle > {{ info.title }} </v-list-item-subtitle>
+                                            <v-list-item-title class="mb-1"> {{ info.count }} </v-list-item-title>
                                             <strong></strong>
                                         </v-list-item-content>
                                     </v-list-item>
@@ -21,74 +22,10 @@
                             </v-item>
                         </v-col>
 
-                        <v-col cols="12" md="2" xl="2" sm="6" class="col">
-                            <v-item>
-                                <v-card class="d-flex align-center rounded-xl card" color="#004D40" height="200">
-                                    <v-row>
-                                        <v-col cols="12" sm="12">
-                                            <v-list-item three-line class="mt-10">
-                                                <v-list-item-content>
-                                                    <div class="mb-4">
-                                                        <v-icon x-large color="white">mdi mdi-domain</v-icon>
-                                                    </div>
-                                                    <v-list-item-subtitle> Editoras </v-list-item-subtitle>
-                                                    <v-list-item-title class="mb-1" color="#fff">20 </v-list-item-title>
-                                                    <strong></strong>
-                                                </v-list-item-content>
-                                            </v-list-item>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                            </v-item>
-                        </v-col>
+                        
+                       
 
-                        <v-col cols="12" md="2" xl="2" sm="6" class="col">
-                            <v-item>
-                                <v-card class="d-flex align-center rounded-xl card" color="#004D40" height="200">
-                                    <v-row>
-                                        <v-col cols="12" sm="12">
-                                            <v-list-item three-line class="mt-10">
-                                                <v-list-item-content>
-                                                    <div class="mb-4">
-                                                        <v-icon x-large color="white"
-                                                            >mdi-book-open-blank-variant</v-icon
-                                                        >
-                                                    </div>
-                                                    <v-list-item-subtitle> Livros </v-list-item-subtitle>
-                                                    <v-list-item-title class="mb-1" color="#fff"
-                                                        >129
-                                                    </v-list-item-title>
-                                                    <strong></strong>
-                                                </v-list-item-content>
-                                            </v-list-item>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                            </v-item>
-                        </v-col>
-
-                        <v-col cols="12" md="2" xl="2" sm="6" class="col">
-                            <v-item>
-                                <v-card class="d-flex align-center rounded-xl card" color="#004D40" height="200">
-                                    <v-row>
-                                        <v-col cols="12" sm="12">
-                                            <v-list-item three-line class="mt-10">
-                                                <v-list-item-content>
-                                                    <div class="mb-4">
-                                                        <v-icon x-large color="white"
-                                                            >mdi-badge-account-horizontal-outline</v-icon
-                                                        >
-                                                    </div>
-                                                    <v-list-item-subtitle> Aluguéis </v-list-item-subtitle>
-                                                    <v-list-item-title class="mb-1" color="#fff">35 </v-list-item-title>
-                                                    <strong></strong>
-                                                </v-list-item-content>
-                                            </v-list-item>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                            </v-item>
-                        </v-col>
+                    
                     </v-row>
                 </v-item-group>
             </v-container>
@@ -102,12 +39,87 @@
 
 <script>
 import BarChart from '@/components/charts/BarChart.vue';
+import clients from '@/services/clients';
+import publishers from '@/services/publishers';
+import books from '@/services/books';
+import rentals from '@/services/rentals';
 
 export default {
     name: 'HomeComponent',
     components: {
         BarChart,
     },
+    data: () => {
+        return {
+            clientsArray: [],
+            publishersArray: [],
+            booksArray: [],
+            rentalsArray: [],
+            infos: [
+                {
+                    icon: 'mdi mdi-account',
+                    title: "Usuários",
+                    count: 0
+                },
+                {
+                    icon: 'mdi mdi-domain',
+                    title: "Editoras",
+                    count: 0
+                },
+                {
+                    icon: 'mdi-book-open-blank-variant',
+                    title: "Livros",
+                    count: 0
+                },
+                {
+                    icon: 'mdi-badge-account-horizontal-outline',
+                    title: "Aluguéis",
+                    count: 0
+                }
+
+            ],
+           
+        }
+    },
+    methods: {
+                clientsList() {
+                    clients.list().then((resposta) => {
+                        console.log('clients', resposta.data)
+                        this.clientsArray = resposta.data
+                        this.infos[0].count = this.clientsArray.length
+                    })
+
+                },
+                publishersList() {
+                    publishers.list().then((resposta) => {
+                        console.log('publishers', resposta.data)
+                        this.publishersArray = resposta.data
+                        this.infos[1].count = this.publishersArray.length
+                    })
+
+                },
+                booksList() {
+                    books.list().then((resposta) => {
+                        console.log('books', resposta.data)
+                        this.booksArray = resposta.data
+                        this.infos[2].count = this.booksArray.length
+                    })
+
+                },
+                rentalsList() {
+                    rentals.list().then((resposta) => {
+                        console.log('rentals', resposta.data)
+                        this.rentalsArray = resposta.data
+                        this.infos[3].count = this.rentalsArray.length
+                    })
+
+                },
+
+            },
+            mounted() {
+                this.clientsList(),  this.publishersList(), this.booksList(), this.rentalsList();
+
+            }
 };
 </script>
 
@@ -183,6 +195,17 @@ uma classe no componente e colocar a cor branca não funciona por que esse selet
         height: 100vh;
         margin: 20px 20px;
     }
+}
+
+
+
+@media screen and (max-width: 599px) {
+
+    .v-card {
+    width: 100%; 
+    height: 300px; 
+}
+
 }
 
 

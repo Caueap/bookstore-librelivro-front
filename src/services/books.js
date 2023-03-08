@@ -16,6 +16,10 @@ export default {
 
     delete: (id, book) => {
         return http.delete('book/' + id, book)
+    },
+
+    listMostRented: () => {
+        return http.get('book/mostRented')
     }
 
 }
