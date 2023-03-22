@@ -15,5 +15,11 @@ export default {
 
     edit: (id, publisher) => {
         return http.put('publisher/' + id, publisher)
-    }
+    },
+
+    listPublisherWithMoreBooks: () => {
+        return http.get('publisher/mostBooks')
+    },
+
+
 }

@@ -5,7 +5,7 @@
                 <v-item-group class="itemgroup">
                     <v-row justify="space-around" class="space mainrow">
 
-                        <v-col v-for="(info, index) in infos" :key="index" cols="12" md="2" xl="2" sm="6" class="col">
+                        <v-col v-for="(info, index) in infos" :key="index" cols="12" lg="2" md="6" xl="2" sm="6" class="col">
                             <v-item>
                                 <v-card class="d-flex align-center rounded-xl card" color="#004D40" height="200">
                                     <v-list-item three-line class="mt-10">
@@ -31,7 +31,14 @@
             </v-container>
 
             <div class="chartdiv">
-                <BarChart />
+                <div class="barchartdiv">
+                    <BarChart />
+                </div>
+                <div class="piechartdiv">
+                    <PieChart />
+                </div>
+
+                
             </div>
         </div>
     </div>
@@ -39,6 +46,7 @@
 
 <script>
 import BarChart from '@/components/charts/BarChart.vue';
+import PieChart from '../charts/PieChart.vue';
 import clients from '@/services/clients';
 import publishers from '@/services/publishers';
 import books from '@/services/books';
@@ -48,6 +56,7 @@ export default {
     name: 'HomeComponent',
     components: {
         BarChart,
+        PieChart
     },
     data: () => {
         return {
@@ -126,13 +135,13 @@ export default {
 <style scoped>
 .maindiv {
     background-color: #00695c;
-    height: 100%;
+    /* height: 100%; */
 }
 
 .content-div {
     margin: 35px 100px;
     background-color: #fff;
-    height: 85vh;
+    /* height: 85vh; */
 }
 
 .mainrow {
@@ -161,19 +170,70 @@ uma classe no componente e colocar a cor branca não funciona por que esse selet
 }
 
 .chartdiv {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    
+}
+
+/* .barchartdiv {
  width: 100%;
- max-width: 500px;
- margin-left: 70px;
+ height: 450px;
+ max-width: 650px;
+ margin-left: 180px;
  margin-top: 80px;
 }
 
-@media screen and (min-width: 600px) and (max-width: 960px) {
+.piechartdiv {
+    margin-right: 200px;
+    margin-top: 80px;
+    width: 100%;
+    max-width: 650px;
+    height: 450px;
+    padding-left: 100px;
+} */
 
+
+@media screen and (max-width: 1260px) {
+    .card{
+        width: 500px;
+    }
+    
+}
+
+@media screen and (max-width: 1110px) {
+    
+    .col{
+        flex-wrap: wrap;
+
+    }
+}
+
+@media screen and (min-width: 1420px) {
+    
     .chartdiv {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 1270px) {
+    
+    .chartdiv {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+
+/* @media screen and (min-width: 600px) and (max-width: 960px) {
+
+    .barchartdiv {
         margin: auto;
         margin-top: 50px;
     }
-}
+} */
 
 @media screen and (min-width: 600px) and (max-width: 960px) {
 
@@ -182,31 +242,38 @@ uma classe no componente e colocar a cor branca não funciona por que esse selet
 }
 }
 
+@media screen and (max-width: 750px) {
 
-@media screen and (min-width: 300px) and (max-width: 600px) {
     .chartdiv {
-        margin: auto;
-        margin-top: 50px;
+        width: 320px;
     }
 }
 
-@media screen and (min-width: 300px) and (max-width: 600px) {
+
+/* @media screen and (min-width: 300px) and (max-width: 600px) {
+    .barchartdiv {
+        margin: auto;
+        margin-top: 50px;
+    }
+} */
+
+/* @media screen and (min-width: 300px) and (max-width: 600px) {
     .content-div {
         height: 100vh;
         margin: 20px 20px;
     }
-}
+} */
 
 
 
-@media screen and (max-width: 599px) {
+/* @media screen and (max-width: 599px) {
 
     .v-card {
     width: 100%; 
     height: 300px; 
 }
 
-}
+} */
 
 
 /* .itemtitle {

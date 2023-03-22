@@ -28,12 +28,13 @@
                                 >
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
-                                            v-model="book.releaseDate"
+                                            v-model="formatedReleaseDate"
                                             label="Data de lançamento"
                                             append-icon="mdi-calendar"
                                             readonly
                                             v-bind="attrs"
                                             v-on="on"
+                                            :rules="[rules.required]"
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker v-model="book.releaseDate" no-title scrollable :max="todayDate">
@@ -67,7 +68,7 @@
                                     label="Unidades disponíveis"
                                     v-model="book.amount"
                                     type="number"
-                                    :rules="[rules.required]"
+                                    :rules="[rules.required, rules.minAmount]"
                                 ></v-text-field>
 
                                 <!-- <v-text-field label="Editora" v-model="book.publisherModelId" :rules="[rules.required]">
@@ -93,7 +94,7 @@
             </template>
 
             
-            <v-card class="card">
+            <v-card class="tableCard">
                 <v-card-title>
                     Livros
                     <v-divider></v-divider>
@@ -214,6 +215,7 @@ export default {
                 },
                 {
                     text: 'AÇÕES',
+                    align: 'center',
                     value: 'actions',
                     class: 'teal darken-4, white--text',
                     sortable: 'false',
@@ -225,6 +227,7 @@ export default {
             rules: {
                 required: (value) => !!value || 'Este campo é obrigatório',
                 minLength: (value) => value.length >= 3 || 'Mínimo de 3 caracteres',
+                minAmount: (value) => value > 0 || 'É necessário que pelo menos 1 unidade seja cadastrada',
                 maxLength: (value) => value.length <= 45 || 'Máximo de 45 caracteres',
                 maxCityLength: (value) => value.length <= 30 || 'Máximo de 30 caracteres',
                 maxAgelength: (value) => (value.length >= 1 && value.length <= 3) || 'Máximo de 3 caracteres',
@@ -244,10 +247,16 @@ export default {
         todayDate() {
             return moment(new Date()).format('yyyy-MM-DD');
         },
+        formatedReleaseDate() {
+            return this.parseDate(this.book.releaseDate)
+        }
     },
     methods: {
         parseDate(date) {
-            return moment(date).format('DD/MM/yyyy');
+            if (date) {
+                return moment(date).format('DD/MM/yyyy');
+            }
+            return '';
         },
         parseDateISO(date) {
             const [dd, mm, yyyy] = date.split('/');
@@ -422,7 +431,7 @@ export default {
 
 <style scoped>
 
-.card {
+.tableCard {
     margin-top: 20px;
 }
 

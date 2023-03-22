@@ -1,8 +1,10 @@
 <template>
+    <div class="maindiv">
     <v-container>
         <PublisherCrud/>
         
     </v-container>
+</div>
         
     
 </template>
@@ -24,3 +26,13 @@ export default {
 }
 
 </script>
+
+<style scoped>
+
+.maindiv {
+    background-color: #00695C;
+    padding-bottom: 100%;
+}
+
+
+</style>

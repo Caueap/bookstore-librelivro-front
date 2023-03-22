@@ -7,6 +7,7 @@
 <script>
 import barchart from 'vue-apexcharts';
 import books from '@/services/books';
+// import publishers from '@/services/publishers';
 
 export default {
     name: 'BarChart',
@@ -115,11 +116,15 @@ export default {
     width: 650px;
 }
 
+@media screen and (max-width: 750px) {
+    .main {
+        max-width: 100%;
+    }
+}
 
-
-@media screen and (min-width: 300px) and (max-width: 600px) {
+/* @media screen and (min-width: 300px) and (max-width: 600px) {
     .main {
         max-width: 480px;
     }
-}
+} */
 </style>

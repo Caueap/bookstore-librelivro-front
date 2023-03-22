@@ -1,28 +1,30 @@
 <template>
     <div>
         <template>
-            <template>
-                <v-dialog v-model="dialog" max-width="500" persistent>
-                    <v-card>
-                        <v-card-title>{{ formTitle }}</v-card-title>
-                        <v-card-text>
-                            <v-form class="px-3" ref="form">
-                                <v-text-field
-                                    label="Nome"
-                                    v-model="client.name"
-                                    :rules="[rules.required, rules.minLength, rules.maxLength]"
-                                ></v-text-field>
-                                <!-- <v-text-field
+            <div>
+                <template>
+                    <template>
+                        <v-dialog v-model="dialog" max-width="500" persistent>
+                            <v-card>
+                                <v-card-title>{{ formTitle }}</v-card-title>
+                                <v-card-text>
+                                    <v-form class="px-3" ref="form">
+                                        <v-text-field
+                                            label="Nome"
+                                            v-model="client.name"
+                                            :rules="[rules.required, rules.minLength, rules.maxLength]"
+                                        ></v-text-field>
+                                        <!-- <v-text-field
                                     label="Idade"
                                     v-model="client.age"
                                     :rules="[rules.required, rules.maxAgelength]"
                                 ></v-text-field> -->
-                                <v-text-field
-                                    label="E-mail"
-                                    v-model="client.email"
-                                    :rules="[rules.required, rules.minLength, rules.maxLength, rules.email]"
-                                ></v-text-field>
-                                <!-- <v-menu
+                                        <v-text-field
+                                            label="E-mail"
+                                            v-model="client.email"
+                                            :rules="[rules.required, rules.minLength, rules.maxLength, rules.email]"
+                                        ></v-text-field>
+                                        <!-- <v-menu
                                     ref="menu"
                                     v-model="menu"
                                     :close-on-content-click="false"
@@ -47,7 +49,7 @@
                                         <v-btn text color="primary" @click="$refs.menu.save(client.birthDate)"> OK </v-btn>
                                     </v-date-picker>
                                 </v-menu> -->
-                                <!-- <v-menu>
+                                        <!-- <v-menu>
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
                                             label="Data de nascimento "
@@ -64,70 +66,89 @@
                                         <v-btn text color="primary" @click="$refs.dialog.save(date)"> OK </v-btn>
                                     </v-date-picker>
                                 </v-menu> -->
-                                <v-text-field
-                                    label="Cidade"
-                                    v-model="client.city"
-                                    :rules="[rules.required, rules.minLength, rules.maxLength]"
-                                ></v-text-field>
-                                <v-text-field
-                                    label="Endereço"
-                                    v-model="client.address"
-                                    :rules="[rules.required, rules.minLength, rules.maxCityLength]"
-                                >
-                                </v-text-field>
-                            </v-form>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-btn color="error" text @click="close">Fechar</v-btn>
-                            <v-btn color="primary" text @click="saveif">Salvar</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </template>
-            <v-card>
-                <v-card-title>
-                    Usuários
-                    <v-divider></v-divider>
-                    <v-btn class="ma-2 teal darken-4 white--text" rounded @click="dialog = true">Cadastrar</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-text-field v-model="search" append-icon="mdi-magnify" label="Pesquisar" single-line hide-details>
-                    </v-text-field>
-                </v-card-title>
-                <v-data-table
-                    :headers="headers"
-                    :items="clientsArray"
-                    :search="search"
-                    class="elevation-1"
-                    items-per-page="5"
-                >
-                    <template v-slot:[`item.actions`]="{ item }">
-                        <v-tooltip top color="#0061A3">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                    color="primary"
-                                    v-bind="attrs"
-                                    v-on="on"
-                                    text
-                                    small
-                                    rounded
-                                    @click="editFirst(item)"
-                                >
-                                    <v-icon dark>mdi-pencil</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Editar</span>
-                        </v-tooltip>
-                        <v-tooltip top color="red">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn color="error" v-bind="attrs" v-on="on" text small rounded @click="remove(item)">
-                                    <v-icon dark>mdi-delete</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Remover</span>
-                        </v-tooltip>
+                                        <v-text-field
+                                            label="Cidade"
+                                            v-model="client.city"
+                                            :rules="[rules.required, rules.minLength, rules.maxLength]"
+                                        ></v-text-field>
+                                        <v-text-field
+                                            label="Endereço"
+                                            v-model="client.address"
+                                            :rules="[rules.required, rules.minLength, rules.maxCityLength]"
+                                        >
+                                        </v-text-field>
+                                    </v-form>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-btn color="error" text @click="close">Fechar</v-btn>
+                                    <v-btn color="primary" text @click="saveif">Salvar</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                     </template>
-                </v-data-table>
-            </v-card>
+
+                    <v-card class="tableCard">
+                        <v-card-title>
+                            Usuários
+                            <v-divider></v-divider>
+                            <v-btn class="ma-2 teal darken-4 white--text" rounded @click="dialog = true"
+                                >Cadastrar</v-btn
+                            >
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Pesquisar"
+                                single-line
+                                hide-details
+                            >
+                            </v-text-field>
+                        </v-card-title>
+                        <v-data-table
+                            :headers="headers"
+                            :items="clientsArray"
+                            :search="search"
+                            class="elevation-1"
+                            items-per-page="5"
+                        >
+                            <template v-slot:[`item.actions`]="{ item }">
+                                <v-tooltip top color="#0061A3">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            color="primary"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            text
+                                            small
+                                            rounded
+                                            @click="editFirst(item)"
+                                        >
+                                            <v-icon dark>mdi-pencil</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Editar</span>
+                                </v-tooltip>
+                                <v-tooltip top color="red">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            color="error"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            text
+                                            small
+                                            rounded
+                                            @click="remove(item)"
+                                        >
+                                            <v-icon dark>mdi-delete</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Remover</span>
+                                </v-tooltip>
+                            </template>
+                        </v-data-table>
+                    </v-card>
+                </template>
+            </div>
         </template>
     </div>
 </template>
@@ -200,6 +221,7 @@ export default {
                 },
                 {
                     text: 'AÇÕES',
+                    align: 'center',
                     value: 'actions',
                     class: 'teal darken-4, white--text',
                     sortable: 'false',
@@ -377,3 +399,13 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+
+.tableCard {
+    margin-top: 20px;
+    
+}
+
+
+</style>

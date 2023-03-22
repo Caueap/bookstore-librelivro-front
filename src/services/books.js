@@ -20,6 +20,10 @@ export default {
 
     listMostRented: () => {
         return http.get('book/mostRented')
-    }
+    },
+
+    listAvailable: () => {
+        return http.get('book/available')
+    },
 
 }

@@ -1,4 +1,6 @@
 <template>
+<div>
+<template>
     <div>
         <template>
             <template>
@@ -192,7 +194,8 @@
                     </v-card>
                 </v-dialog>
             </template>
-            <v-card>
+
+            <v-card class="tableCard">
                 <v-card-title>
                     Alugueis
                     <v-divider></v-divider>
@@ -253,6 +256,10 @@
             </v-card>
         </template>
     </div>
+</template>
+
+
+</div>
 </template>
 
 <script>
@@ -411,7 +418,7 @@ export default {
             });
         },
         booksList() {
-            books.list().then((resposta) => {
+            books.listAvailable().then((resposta) => {
                 console.log('books', resposta.data);
                 this.booksArray = resposta.data;
             });
@@ -605,7 +612,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
+.tableCard {
+    margin-top: 20px;
+}
 /* .v-application .teal{
     background-color: #004d40;
     border-color: #004d40;

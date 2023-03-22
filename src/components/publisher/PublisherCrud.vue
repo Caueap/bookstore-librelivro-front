@@ -1,4 +1,6 @@
 <template>
+<div>
+<template>
     <div>
         <template>
             <template>
@@ -27,7 +29,8 @@
                     </v-card>
                 </v-dialog>
             </template>
-            <v-card>
+
+            <v-card class="tableCard">
                 <v-card-title>
                     Editoras
                     <v-divider></v-divider>
@@ -73,6 +76,8 @@
             </v-card>
         </template>
     </div>
+</template>
+</div>
 </template>
 
 <script>
@@ -287,3 +292,12 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+
+.tableCard {
+    margin-top: 20px;
+}
+
+
+</style>
