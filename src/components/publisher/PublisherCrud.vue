@@ -1,83 +1,105 @@
 <template>
-<div>
-<template>
     <div>
         <template>
-            <template>
-                <v-dialog v-model="dialog" max-width="500" persistent>
-                    <v-card>
-                        <v-card-title>{{ formTitle }}</v-card-title>
-                        <v-card-text>
-                            <v-form class="px-3" ref="form">
-                                <v-text-field
-                                    label="Nome da editora"
-                                    v-model="publisher.name"
-                                    :rules="[rules.required, rules.minLength, rules.maxLength]"
-                                ></v-text-field>
-                                <v-text-field
-                                    label="Cidade da editora"
-                                    v-model="publisher.city"
-                                    :rules="[rules.required, rules.minLength, rules.maxCityLength]"
-                                >
-                                </v-text-field>
-                            </v-form>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-btn color="error" text @click="close">Fechar</v-btn>
-                            <v-btn color="primary" text @click="saveif">Salvar</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </template>
-
-            <v-card class="tableCard">
-                <v-card-title>
-                    Editoras
-                    <v-divider></v-divider>
-                    <v-btn class="ma-2 teal darken-4 white--text" rounded @click="dialog = true">Cadastrar</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-text-field v-model="search" append-icon="mdi-magnify" label="Pesquisar" single-line hide-details>
-                    </v-text-field>
-                </v-card-title>
-                <v-data-table
-                    :headers="headers"
-                    :items="publishersArray"
-                    :search="search"
-                    class="elevation-1"
-                    items-per-page="5"
-                >
-                    <template v-slot:[`item.actions`]="{ item }">
-                        <v-tooltip top color="#0061A3">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                    color="primary"
-                                    v-bind="attrs"
-                                    v-on="on"
-                                    text
-                                    small
-                                    rounded
-                                    @click="editFirst(item)"
-                                >
-                                    <v-icon dark>mdi-pencil</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Editar</span>
-                        </v-tooltip>
-                        <v-tooltip top color="red">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn color="error" v-bind="attrs" v-on="on" text small rounded @click="remove(item)">
-                                    <v-icon dark>mdi-delete</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Remover</span>
-                        </v-tooltip>
+            <div>
+                <template>
+                    <template>
+                        <v-dialog v-model="dialog" max-width="500" persistent>
+                            <v-card>
+                                <v-card-title>{{ formTitle }}</v-card-title>
+                                <v-card-text>
+                                    <v-form class="px-3" ref="form">
+                                        <v-text-field
+                                            label="Nome da editora"
+                                            v-model="publisher.name"
+                                            :rules="[rules.required, rules.minLength, rules.maxLength]"
+                                        ></v-text-field>
+                                        <v-text-field
+                                            label="Cidade da editora"
+                                            v-model="publisher.city"
+                                            :rules="[rules.required, rules.minLength, rules.maxCityLength]"
+                                        >
+                                        </v-text-field>
+                                    </v-form>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-btn color="error" text @click="close">Fechar</v-btn>
+                                    <v-btn color="primary" text @click="saveif">Salvar</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                     </template>
-                </v-data-table>
-            </v-card>
+
+                    <v-card class="tableCard">
+                        <v-card-title>
+                            Editoras
+                            <v-divider></v-divider>
+                            <v-btn class="ma-2 teal darken-4 white--text" rounded @click="dialog = true"
+                                >Cadastrar</v-btn
+                            >
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Pesquisar"
+                                single-line
+                                hide-details
+                            >
+                            </v-text-field>
+                        </v-card-title>
+                        <v-data-table
+                            :headers="headers"
+                            :items="publishersArray"
+                            :search="search"
+                            class="elevation-1"
+                            :footer-props="{
+                                showFirstLastPage: true,
+                                firstIcon: 'mdi-arrow-collapse-left',
+                                lastIcon: 'mdi-arrow-collapse-right',
+
+                                'items-per-page-text': 'Items por página',
+                            }"
+                        >
+                            <template v-slot:[`item.actions`]="{ item }">
+                                <v-tooltip top color="#0061A3">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            color="primary"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            text
+                                            small
+                                            rounded
+                                            @click="editFirst(item)"
+                                        >
+                                            <v-icon dark>mdi-pencil</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Editar</span>
+                                </v-tooltip>
+                                <v-tooltip top color="red">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            color="error"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            text
+                                            small
+                                            rounded
+                                            @click="remove(item)"
+                                        >
+                                            <v-icon dark>mdi-delete</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Remover</span>
+                                </v-tooltip>
+                            </template>
+                        </v-data-table>
+                    </v-card>
+                </template>
+            </div>
         </template>
     </div>
-</template>
-</div>
 </template>
 
 <script>
@@ -294,10 +316,7 @@ export default {
 </script>
 
 <style scoped>
-
 .tableCard {
     margin-top: 20px;
 }
-
-
 </style>

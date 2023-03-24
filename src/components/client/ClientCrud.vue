@@ -109,7 +109,13 @@
                             :items="clientsArray"
                             :search="search"
                             class="elevation-1"
-                            items-per-page="5"
+                            :footer-props="{
+                                showFirstLastPage: true,
+                                firstIcon: 'mdi-arrow-collapse-left',
+                                lastIcon: 'mdi-arrow-collapse-right',
+
+                                'items-per-page-text': 'Items por página',
+                            }"
                         >
                             <template v-slot:[`item.actions`]="{ item }">
                                 <v-tooltip top color="#0061A3">
@@ -233,7 +239,7 @@ export default {
                 required: (value) => !!value || 'Este campo é obrigatório',
                 minLength: (value) => value.length >= 3 || 'Mínimo de 3 caracteres',
                 maxLength: (value) => value.length <= 45 || 'Máximo de 45 caracteres',
-                maxCityLength: (value) => value.length <= 30 || 'Máximo de 30 caracteres',
+                // maxCityLength: (value) => value.length <= 30 || 'Máximo de 300 caracteres',
                 maxAgelength: (value) => (value.length >= 1 && value.length <= 3) || 'Máximo de 3 caracteres',
                 email: (value) => {
                     const pattern =
@@ -401,11 +407,7 @@ export default {
 </script>
 
 <style scoped>
-
 .tableCard {
     margin-top: 20px;
-    
 }
-
-
 </style>

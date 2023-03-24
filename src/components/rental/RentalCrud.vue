@@ -1,106 +1,106 @@
 <template>
-<div>
-<template>
     <div>
         <template>
-            <template>
-                <v-dialog v-model="dialog" max-width="500" persistent>
-                    <v-card>
-                        <v-card-title>Novo Aluguel</v-card-title>
-                        <v-card-text>
-                            <v-form class="px-3" ref="form">
-                                <v-select
-                                    v-model="rental.bookModel"
-                                    :rules="[rules.required]"
-                                    :items="booksArray"
-                                    item-text="name"
-                                    item-value="id"
-                                    label="Livro"
-                                    required
-                                ></v-select>
-                                <v-select
-                                    v-model="rental.clientModel"
-                                    :rules="[rules.required]"
-                                    :items="clientsArray"
-                                    item-text="name"
-                                    item-value="id"
-                                    label="Usuário"
-                                    required
-                                ></v-select>
-                                <v-menu
-                                    ref="menu"
-                                    v-model="menu"
-                                    :close-on-content-click="false"
-                                    :return-value.sync="rental.rentalDate"
-                                    transition="scale-transition"
-                                    offset-y
-                                    min-width="auto"
-                                >
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field
-                                            v-model="formattedRentalDate"
-                                            label="Data de aluguel"
-                                            append-icon="mdi-calendar"
-                                            readonly
-                                            v-bind="attrs"
-                                            v-on="on"
-                                            :rules="[rules.required, rules.maxDate]"
-                                        ></v-text-field>
-                                    </template>
-                                    <v-date-picker
-                                        v-model="rental.rentalDate"
-                                        no-title
-                                        scrollable
-                                        locale="pt-br"
-                                        :min="todayDate"
-                                        :max="todayDate"
-                                    >
-                                        <v-spacer></v-spacer>
-                                        <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
-                                        <v-btn text color="primary" @click="$refs.menu.save(rental.rentalDate)">
-                                            OK
-                                        </v-btn>
-                                    </v-date-picker>
-                                </v-menu>
-                                <v-menu
-                                    ref="menu2"
-                                    v-model="menu2"
-                                    :close-on-content-click="false"
-                                    :return-value.sync="rental.expectedDeliveryDate"
-                                    transition="scale-transition"
-                                    offset-y
-                                    min-width="auto"
-                                >
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field
-                                            v-model="formattedExpectedDeliveryDate"
-                                            label="Data esperada de devolução"
-                                            append-icon="mdi-calendar"
-                                            readonly
-                                            v-bind="attrs"
-                                            v-on="on"
+            <div>
+                <template>
+                    <template>
+                        <v-dialog v-model="dialog" max-width="500" persistent>
+                            <v-card>
+                                <v-card-title>Novo Aluguel</v-card-title>
+                                <v-card-text>
+                                    <v-form class="px-3" ref="form">
+                                        <v-select
+                                            v-model="rental.bookModel"
                                             :rules="[rules.required]"
-                                        ></v-text-field>
-                                    </template>
-                                    <v-date-picker
-                                        v-model="rental.expectedDeliveryDate"
-                                        no-title
-                                        scrollable
-                                        locale="pt-br"
-                                        :min="rental.rentalDate"
-                                    >
-                                        <v-spacer></v-spacer>
-                                        <v-btn text color="primary" @click="menu2 = false"> Cancel </v-btn>
-                                        <v-btn
-                                            text
-                                            color="primary"
-                                            @click="$refs.menu2.save(rental.expectedDeliveryDate)"
+                                            :items="booksArray"
+                                            item-text="name"
+                                            item-value="id"
+                                            label="Livro"
+                                            required
+                                        ></v-select>
+                                        <v-select
+                                            v-model="rental.clientModel"
+                                            :rules="[rules.required]"
+                                            :items="clientsArray"
+                                            item-text="name"
+                                            item-value="id"
+                                            label="Usuário"
+                                            required
+                                        ></v-select>
+                                        <v-menu
+                                            ref="menu"
+                                            v-model="menu"
+                                            :close-on-content-click="false"
+                                            :return-value.sync="rental.rentalDate"
+                                            transition="scale-transition"
+                                            offset-y
+                                            min-width="auto"
                                         >
-                                            OK
-                                        </v-btn>
-                                    </v-date-picker>
-                                </v-menu>
-                                <!-- <v-menu
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-text-field
+                                                    v-model="formattedRentalDate"
+                                                    label="Data de aluguel"
+                                                    append-icon="mdi-calendar"
+                                                    readonly
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    :rules="[rules.required, rules.maxDate]"
+                                                ></v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                v-model="rental.rentalDate"
+                                                no-title
+                                                scrollable
+                                                locale="pt-br"
+                                                :min="todayDate"
+                                                :max="todayDate"
+                                            >
+                                                <v-spacer></v-spacer>
+                                                <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
+                                                <v-btn text color="primary" @click="$refs.menu.save(rental.rentalDate)">
+                                                    OK
+                                                </v-btn>
+                                            </v-date-picker>
+                                        </v-menu>
+                                        <v-menu
+                                            ref="menu2"
+                                            v-model="menu2"
+                                            :close-on-content-click="false"
+                                            :return-value.sync="rental.expectedDeliveryDate"
+                                            transition="scale-transition"
+                                            offset-y
+                                            min-width="auto"
+                                        >
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-text-field
+                                                    v-model="formattedExpectedDeliveryDate"
+                                                    label="Data esperada de devolução"
+                                                    append-icon="mdi-calendar"
+                                                    readonly
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    :rules="[rules.required]"
+                                                ></v-text-field>
+                                            </template>
+                                            <v-date-picker
+                                                v-model="rental.expectedDeliveryDate"
+                                                no-title
+                                                scrollable
+                                                locale="pt-br"
+                                                :min="rental.rentalDate"
+                                            >
+                                                <v-spacer></v-spacer>
+                                                <v-btn text color="primary" @click="menu2 = false"> Cancel </v-btn>
+                                                <v-btn
+                                                    text
+                                                    color="primary"
+                                                    @click="$refs.menu2.save(rental.expectedDeliveryDate)"
+                                                >
+                                                    OK
+                                                </v-btn>
+                                            </v-date-picker>
+                                        </v-menu>
+                                        <!-- <v-menu
                                     ref="menu3"
                                     v-model="menu3"
                                     :close-on-content-click="false"
@@ -130,7 +130,7 @@
                                         </v-btn>
                                     </v-date-picker>
                                 </v-menu> -->
-                                <!-- <v-menu>
+                                        <!-- <v-menu>
                                     <template v-slot:activator="{ on }">
                                         <v-text-field
                                             label="Data de locação"
@@ -185,81 +185,93 @@
                                         <v-btn text color="primary" @click="$refs.dialog.save(date)"> OK </v-btn>
                                     </v-date-picker>
                                 </v-menu> -->
-                            </v-form>
-                        </v-card-text>
-                        <v-card-actions>
-                            <v-btn color="error" text @click="closeC">Fechar</v-btn>
-                            <v-btn color="primary" text @click="save">Salvar</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-            </template>
+                                    </v-form>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-btn color="error" text @click="closeC">Fechar</v-btn>
+                                    <v-btn color="primary" text @click="save">Salvar</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </template>
 
-            <v-card class="tableCard">
-                <v-card-title>
-                    Alugueis
-                    <v-divider></v-divider>
-                    <v-btn class="ma-2 teal darken-4 white--text" rounded @click="dialog = true">Cadastrar</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-text-field v-model="search" append-icon="mdi-magnify" label="Pesquisar" single-line hide-details>
-                    </v-text-field>
-                </v-card-title>
-                <v-data-table
-                    :headers="headers"
-                    :items="rentalsArray"
-                    :search="search"
-                    class="elevation-1"
-                    items-per-page="5"
-                >
-                    <!-- <template v-slot:[`item.rentalDate`]="{ item }"> {{ parseDate(item.rentalDate) }} </template>
+                    <v-card class="tableCard">
+                        <v-card-title>
+                            Alugueis
+                            <v-divider></v-divider>
+                            <v-btn class="ma-2 teal darken-4 white--text" rounded @click="dialog = true"
+                                >Cadastrar</v-btn
+                            >
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Pesquisar"
+                                single-line
+                                hide-details
+                            >
+                            </v-text-field>
+                        </v-card-title>
+                        <v-data-table
+                            :headers="headers"
+                            :items="rentalsArray"
+                            :search="search"
+                            class="elevation-1"
+                            :footer-props="{
+                                showFirstLastPage: true,
+                                firstIcon: 'mdi-arrow-collapse-left',
+                                lastIcon: 'mdi-arrow-collapse-right',
+
+                                'items-per-page-text': 'Items por página',
+                            }"
+                        >
+                            <!-- <template v-slot:[`item.rentalDate`]="{ item }"> {{ parseDate(item.rentalDate) }} </template>
                     <template v-slot:[`item.expectedDeliveryDate`]="{ item }">
                         {{ parseDate(item.expectedDeliveryDate) }}
                     </template>
                     <template v-slot:[`item.deliveryDate`]="{ item }"> {{ parseDate(item.deliveryDate) }} </template> -->
-                    <template v-slot:[`item.actions`]="{ item }">
-                        <v-tooltip top color="#0061A3">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                    color="primary"
-                                    v-bind="attrs"
-                                    v-on="on"
-                                    text
-                                    small
-                                    rounded
-                                    v-show="item.status == 'Pendente'"
-                                    @click="deliveryFirst(item)"
-                                >
-                                    <v-icon dark>mdi-package-check</v-icon>
-                                </v-btn>
+                            <template v-slot:[`item.actions`]="{ item }">
+                                <v-tooltip top color="#0061A3">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            color="primary"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            text
+                                            small
+                                            rounded
+                                            v-show="item.status == 'Pendente'"
+                                            @click="deliveryFirst(item)"
+                                        >
+                                            <v-icon dark>mdi-package-check</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Devolver</span>
+                                </v-tooltip>
+                                <v-tooltip top color="red">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                            color="error"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            text
+                                            small
+                                            rounded
+                                            v-show="item.status != 'Pendente'"
+                                            @click="remove(item)"
+                                        >
+                                            <v-icon dark>mdi-delete</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Remover</span>
+                                </v-tooltip>
                             </template>
-                            <span>Devolver</span>
-                        </v-tooltip>
-                        <v-tooltip top color="red">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                    color="error"
-                                    v-bind="attrs"
-                                    v-on="on"
-                                    text
-                                    small
-                                    rounded
-                                    v-show="item.status != 'Pendente'"
-                                    @click="remove(item)"
-                                >
-                                    <v-icon dark>mdi-delete</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Remover</span>
-                        </v-tooltip>
-                    </template>
-                </v-data-table>
-            </v-card>
+                        </v-data-table>
+                    </v-card>
+                </template>
+            </div>
         </template>
     </div>
-</template>
-
-
-</div>
 </template>
 
 <script>
@@ -613,7 +625,6 @@ export default {
 </script>
 
 <style scoped>
-
 .tableCard {
     margin-top: 20px;
 }
